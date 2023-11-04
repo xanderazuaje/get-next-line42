@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 25
+#  define BUFFER_SIZE 10
 # endif
 
 # include <fcntl.h>
@@ -21,10 +21,15 @@
 # include <stdlib.h>
 # include <limits.h>
 
+typedef struct Tuple_t {
+    char *recent;
+    char *remain;
+} Tuple;
 char	*get_next_line(int fd);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-size_t	len_to_char(const char *s, char c);
-size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_substr(char *s, unsigned int start, size_t len);
+size_t	len_to_nl(char *s);
+size_t	ft_strlen(char *s);
+char	*ft_strjoin(char *rest, char *str_buffer);
+Tuple dispenser(char *s);
 
 #endif
