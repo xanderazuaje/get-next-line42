@@ -47,6 +47,7 @@ size_t	len_to_nl(char *s)
 {
 	size_t	i;
 
+    if (!s) return (0);
 	i = 0;
 	while (s[i])
 	{
@@ -58,23 +59,21 @@ size_t	len_to_nl(char *s)
 }
 
 Tuple dispenser(char *s){
-    int i;
+    size_t nl_pos;
+    size_t len;
     Tuple to_return;
 
-    i = 0;
-    to_return.recent = NULL;
+    nl_pos = len_to_nl(s);
+    len = ft_strlen(s);
+    to_return.line = NULL;
     to_return.remain = NULL;
-    while(s[i])
+    if (nl_pos)
     {
-        if (s[i] == '\n' || s[i + 1] == '\0')
-        {
-            to_return.recent = ft_substr(s, 0, i + 1);
-            to_return.remain = ft_substr(s, i + 1, ft_strlen(s) - i + 1);
-            break;
-        }
-
-        i++;
+        to_return.line = ft_substr(s, 0, nl_pos);
+        to_return.remain = ft_substr(s, nl_pos, len - nl_pos);
     }
+    else
+        to_return.remain = ft_strdup(s);
     return to_return;
 }
 
@@ -134,6 +133,6 @@ char	*ft_strjoin(char *rest, char *str_buffer)
     ft_memcpy(new_str, rest, len1);
     ft_memcpy((new_str + len1), str_buffer, len2);
     new_str[total] = '\0';
-    free(rest);
+    if (rest) free(rest);
     return (new_str);
 }

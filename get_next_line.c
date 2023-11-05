@@ -23,27 +23,24 @@ char *get_next_line(int fd) {
     if (fd < 0 || fd > FOPEN_MAX || BUFFER_SIZE <= 0)
         return (NULL);
     while (1) {
-        size = read(fd, str_buffer, BUFFER_SIZE);
-        str_buffer[size] = '\0';
-        rest = ft_strjoin(rest, str_buffer);
-        to_return = dispenser(rest);
-        free(rest);
-        rest = to_return.remain;
-        return to_return.recent;
-    }
-}
+        if (!len_to_nl(rest))
+        {
+            size = read(fd, str_buffer, BUFFER_SIZE);
+            if (size <= 0)
+            {
+                if (rest != NULL) free(rest);
+                return (NULL);
+            }
+            str_buffer[size] = '\0';
+            rest = ft_strjoin(rest, str_buffer);
+            if (!rest) return (NULL);
+        }
+        else {
+            to_return = dispenser(rest);
+            if (rest != NULL) free(rest);
+            rest = to_return.remain;
+            return to_return.line;
+        }
 
-int main(void) {
-    int fd;
-    char *line;
-
-    fd = open("quijote.txt", O_RDONLY);
-    line = "";
-
-    while(line)
-    {
-        line = get_next_line(fd);
-        printf("%s", line);
-        free(line);
     }
 }
