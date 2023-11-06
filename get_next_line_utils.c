@@ -6,17 +6,16 @@
 /*   By: xazuaje- <xazuaje-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 21:22:46 by xazuaje-          #+#    #+#             */
-/*   Updated: 2023/10/09 00:27:56 by xazuaje-         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:14:21 by xazuaje-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 #include <stdio.h>
 
 void	*ft_memcpy(void *dst, void *src, size_t n)
 {
-	char		*dest_aux;
+	char	*dest_aux;
 	char	*src_aux;
 
 	if (!(dst == 0 && src == 0))
@@ -47,7 +46,8 @@ size_t	len_to_nl(char *s)
 {
 	size_t	i;
 
-    if (!s) return (0);
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 	{
@@ -58,23 +58,25 @@ size_t	len_to_nl(char *s)
 	return (0);
 }
 
-Tuple dispenser(char *s){
-    size_t nl_pos;
-    size_t len;
-    Tuple to_return;
+t_Tuple	dispenser(char *s)
+{
+	size_t	nl_pos;
+	size_t	len;
+	t_Tuple	to_return ;
 
-    nl_pos = len_to_nl(s);
-    len = ft_strlen(s);
-    to_return.line = NULL;
-    to_return.remain = NULL;
-    if (nl_pos)
-    {
-        to_return.line = ft_substr(s, 0, nl_pos);
-        to_return.remain = ft_substr(s, nl_pos, len - nl_pos);
-    }
-    else
-        to_return.remain = ft_strdup(s);
-    return to_return;
+	nl_pos = len_to_nl(s);
+	len = ft_strlen(s);
+	to_return.line = NULL;
+	to_return.remain = NULL;
+	if (nl_pos)
+	{
+		to_return.line = ft_substr(s, 0, nl_pos);
+		if (!(len == nl_pos))
+			to_return.remain = ft_substr(s, nl_pos, len - nl_pos);
+	}
+	else
+		to_return.remain = ft_strdup(s);
+	return (to_return);
 }
 
 char	*ft_substr(char *s, unsigned int start, size_t len)
@@ -95,44 +97,21 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	return (sub_str);
 }
 
-char    *ft_strdup(char *s)
+char	*ft_strdup(char *s)
 {
-    char *new_str;
-    int i;
+	char	*new_str;
+	int		i;
 
-    i = 0;
-    new_str = (char *) malloc(ft_strlen(s) + 1);
-    if(!new_str)
-        return (NULL);
-    while(s[i])
-    {
-        new_str[i] = s[i];
-        i++;
-    }
-    new_str[i] = '\0';
-    return (new_str);
+	i = 0;
+	new_str = (char *)malloc(ft_strlen(s) + 1);
+	if (!new_str)
+		return (NULL);
+	while (s[i])
+	{
+		new_str[i] = s[i];
+		i++;
+	}
+	new_str[i] = '\0';
+	return (new_str);
 }
 
-char	*ft_strjoin(char *rest, char *str_buffer)
-{
-    char	*new_str;
-    size_t	len1;
-    size_t	len2;
-    size_t	total;
-
-    if (!rest)
-    {
-        return (new_str = ft_strdup(str_buffer), new_str);
-    }
-    len1 = ft_strlen(rest);
-    len2 = ft_strlen(str_buffer);
-    total = len1 + len2;
-    new_str = malloc(total + 1);
-    if (!new_str)
-        return (NULL);
-    ft_memcpy(new_str, rest, len1);
-    ft_memcpy((new_str + len1), str_buffer, len2);
-    new_str[total] = '\0';
-    if (rest) free(rest);
-    return (new_str);
-}
